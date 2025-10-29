@@ -17,7 +17,6 @@
             --win-color: #3fb950;
             --loss-color: #f85149;
         }
-        /* ... (The rest of the CSS is the same as the previous version) ... */
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:var(--tg-theme-bg-color);color:var(--tg-theme-text-color);display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:100vh;margin:0;padding:15px;box-sizing:border-box;text-align:center}.container{width:100%;max-width:380px;padding:20px;background-color:var(--tg-theme-secondary-bg-color);border-radius:18px;box-shadow:0 4px 15px rgba(0,0,0,.2)}.stats-bar{display:flex;justify-content:space-between;width:100%;padding:10px;margin-bottom:20px;background-color:rgba(0,0,0,.2);border-radius:12px;font-size:14px}.stat{font-weight:500}#coin-wrapper{perspective:1000px;margin-bottom:20px}#coin{width:120px;height:120px;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(.25,1,.5,1);margin:0 auto}.side{width:100%;height:100%;border-radius:50%;background-image:linear-gradient(45deg,var(--coin-gold),var(--coin-shadow));box-shadow:0 0 20px rgba(255,215,0,.5);border:3px solid var(--coin-shadow);position:absolute;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:700;color:rgba(0,0,0,.6);text-shadow:1px 1px 2px #fff}.heads{transform:translateZ(3px)}.tails{transform:rotateY(180deg) translateZ(3px)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px}.choices label{padding:12px;border:2px solid var(--tg-theme-button-color);background-color:transparent;color:var(--tg-theme-text-color);border-radius:10px;cursor:pointer;transition:all .2s ease-in-out;font-weight:600}.choices input[type=radio]{display:none}.choices input[type=radio]:checked+label{background-color:var(--tg-theme-button-color);color:var(--tg-theme-button-text-color);transform:scale(1.05)}.bet-input-group{position:relative;margin-bottom:20px}.bet-input-group span{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:18px;font-weight:700;color:var(--tg-theme-text-color)}input[type=number]{width:100%;padding:12px 12px 12px 40px;box-sizing:border-box;border-radius:10px;border:1px solid #444;background-color:var(--tg-theme-bg-color);color:var(--tg-theme-text-color);font-size:18px;text-align:center}button{width:100%;padding:15px;font-size:18px;font-weight:700;border:none;border-radius:12px;background-color:var(--tg-theme-button-color);color:var(--tg-theme-button-text-color);cursor:pointer;transition:opacity .3s,transform .1s}button:active{transform:scale(.98)}button:disabled{background-color:#555;color:#999;cursor:not-allowed}#result{margin-top:20px;font-size:22px;font-weight:700;min-height:28px;transition:color .5s}.win{color:var(--win-color)}.loss{color:var(--loss-color)}
     </style>
 </head>
@@ -41,7 +40,116 @@
         </div>
     </div>
     <script>
-        const tg=window.Telegram.WebApp;tg.ready();tg.expand();document.documentElement.style.setProperty('--tg-theme-bg-color',tg.themeParams.bg_color||'#1c2128');document.documentElement.style.setProperty('--tg-theme-text-color',tg.themeParams.text_color||'#f0f6fc');document.documentElement.style.setProperty('--tg-theme-button-color',tg.themeParams.button_color||'#238636');document.documentElement.style.setProperty('--tg-theme-button-text-color',tg.themeParams.button_text_color||'#ffffff');document.documentElement.style.setProperty('--tg-theme-secondary-bg-color',tg.themeParams.secondary_bg_color||'#2d333b');const coin=document.getElementById('coin'),flipButton=document.getElementById('flipButton'),resultText=document.getElementById('result'),betAmountInput=document.getElementById('betAmount'),balanceDisplay=document.getElementById('balanceDisplay'),playsLeftDisplay=document.getElementById('playsLeftDisplay'),urlParams=new URLSearchParams(window.location.search),userBalance=parseFloat(urlParams.get('balance'))||0,playsLeft=parseInt(urlParams.get('playsLeft'))||0;balanceDisplay.textContent=`₹${userBalance.toFixed(2)}`;playsLeftDisplay.textContent=playsLeft;if(playsLeft<=0){flipButton.disabled=!0;flipButton.textContent="No Plays Left Today";resultText.textContent="Come back tomorrow!"}let totalFlips=0;flipButton.addEventListener('click',()=>{const t=document.querySelector('input[name="choice"]:checked'),e=parseFloat(betAmountInput.value);if(!t)return void tg.showAlert("Please choose Heads or Tails!");if(isNaN(e)||e<=0)return void tg.showAlert("Please enter a valid bet amount greater than 0.");if(e>userBalance)return void tg.showAlert(`Your bet of ₹${e.toFixed(2)} is higher than your balance of ₹${userBalance.toFixed(2)}!`);const o=t.value;flipButton.disabled=!0;resultText.textContent="Flipping...";resultText.classList.remove('win','loss');totalFlips+=9;coin.style.transform=`rotateY(${180*totalFlips}deg)`;const n=.5>Math.random()?'heads':'tails';setTimeout(()=>{'tails'===n&&(coin.style.transform=`rotateY(${180*totalFlips+180}deg)`);let t='',l=0;o===n?(t='win',l=e,resultText.textContent=`You won ₹${l.toFixed(2)}!`,resultText.classList.add('win')):(t='loss',l=-e,resultText.textContent=`It was ${n}... You lost.`,resultText.classList.add('loss'));const a={outcome:t,bet:e,payout:l};tg.sendData(JSON.stringify(a));flipButton.textContent="Play Finished"},1300)});
+        // Ensure the Telegram Web App object is available
+        if (window.Telegram && window.Telegram.WebApp) {
+            const tg = window.Telegram.WebApp;
+            
+            tg.ready();
+            tg.expand();
+
+            // Apply Telegram theme colors
+            document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#1c2128');
+            document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#f0f6fc');
+            document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color || '#238636');
+            document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color || '#ffffff');
+            document.documentElement.style.setProperty('--tg-theme-secondary-bg-color', tg.themeParams.secondary_bg_color || '#2d333b');
+            
+            // Get DOM elements
+            const coin = document.getElementById('coin');
+            const flipButton = document.getElementById('flipButton');
+            const resultText = document.getElementById('result');
+            const betAmountInput = document.getElementById('betAmount');
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            const playsLeftDisplay = document.getElementById('playsLeftDisplay');
+
+            // --- Get initial data from URL ---
+            const urlParams = new URLSearchParams(window.location.search);
+            const userBalance = parseFloat(urlParams.get('balance')) || 0;
+            const playsLeft = parseInt(urlParams.get('playsLeft')) || 0;
+
+            // --- Update UI with initial data ---
+            balanceDisplay.textContent = `₹${userBalance.toFixed(2)}`;
+            playsLeftDisplay.textContent = playsLeft;
+
+            if (playsLeft <= 0) {
+                flipButton.disabled = true;
+                flipButton.textContent = "No Plays Left Today";
+                resultText.textContent = "Come back tomorrow!";
+                betAmountInput.disabled = true;
+            }
+            
+            let totalFlips = 0;
+
+            flipButton.addEventListener('click', () => {
+                const choiceInput = document.querySelector('input[name="choice"]:checked');
+                const betAmount = parseFloat(betAmountInput.value);
+
+                // --- Advanced Validation ---
+                if (!choiceInput) {
+                    tg.showAlert("Please choose Heads or Tails!");
+                    return;
+                }
+                if (isNaN(betAmount) || betAmount <= 0) {
+                    tg.showAlert("Please enter a valid bet amount greater than 0.");
+                    return;
+                }
+                if (betAmount > userBalance) {
+                    tg.showAlert(`Your bet of ₹${betAmount.toFixed(2)} is higher than your balance of ₹${userBalance.toFixed(2)}!`);
+                    return;
+                }
+
+                // --- If all validation passes, proceed ---
+                const userChoice = choiceInput.value;
+                flipButton.disabled = true;
+                resultText.textContent = "Flipping...";
+                resultText.classList.remove('win', 'loss');
+
+                totalFlips += 9;
+                coin.style.transform = `rotateY(${180 * totalFlips}deg)`;
+                
+                const randomFlip = Math.random();
+                const flipResult = randomFlip < 0.5 ? 'heads' : 'tails';
+
+                setTimeout(() => {
+                    if (flipResult === 'tails') {
+                        coin.style.transform = `rotateY(${180 * totalFlips + 180}deg)`;
+                    }
+                    
+                    let outcome = '';
+                    let payout = 0;
+
+                    if (userChoice === flipResult) {
+                        outcome = 'win';
+                        payout = betAmount;
+                        resultText.textContent = `You won ₹${payout.toFixed(2)}!`;
+                        resultText.classList.add('win');
+                    } else {
+                        outcome = 'loss';
+                        payout = -betAmount;
+                        resultText.textContent = `It was ${flipResult}... You lost.`;
+                        resultText.classList.add('loss');
+                    }
+
+                    const gameData = {
+                        outcome: outcome,
+                        bet: betAmount,
+                        payout: payout
+                    };
+                    
+                    // --- This is the critical part that sends data back ---
+                    tg.sendData(JSON.stringify(gameData));
+                    
+                    // Optional: Close the web app after a short delay
+                    setTimeout(() => {
+                        tg.close();
+                    }, 1500); // Close 1.5 seconds after result
+                    
+                }, 1300); // Wait for animation
+            });
+        } else {
+            // Fallback for when the game is opened outside of Telegram
+            document.body.innerHTML = "<h1>Error: This web app must be opened inside Telegram.</h1>";
+        }
     </script>
 </body>
 </html>
