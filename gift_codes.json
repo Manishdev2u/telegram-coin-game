@@ -1,0 +1,17 @@
+{
+    "NEW": {
+        "value": 25,
+        "limit": 100,
+        "expiry_date": "2028-10-29",
+        "used_by": "",
+        "used_date": ""
+    },
+    "NEW25": {
+        "value": 25.0,
+        "limit": 100,
+        "expiry_date": "2026-01-05",
+        "used_by": [
+            "6580698563"
+        ]
+    }
+}

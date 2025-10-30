@@ -1,0 +1,61 @@
+{
+    "6580698563": {
+        "first_name": "Manish",
+        "username": "MnhDevTip",
+        "balance": 98999.0,
+        "referrals": 5,
+        "referred_by": null,
+        "join_date": "2025-10-30T08:59:59.269082",
+        "total_earned": 110.0,
+        "last_bonus_claim": "2025-10-30",
+        "tasks_completed": {},
+        "transactions": [
+            {
+                "date": "2025-10-30T09:00:38.379385",
+                "amount": 10.0,
+                "type": "Bonus",
+                "description": "Daily Bonus Claim"
+            },
+            {
+                "date": "2025-10-30T09:04:26.051228",
+                "amount": 25,
+                "type": "Gift Code",
+                "description": "Redeemed code NEW"
+            },
+            {
+                "date": "2025-10-30T09:04:46.282412",
+                "amount": 25,
+                "type": "Gift Code",
+                "description": "Redeemed code NEW"
+            },
+            {
+                "date": "2025-10-30T09:05:32.450106",
+                "amount": 25,
+                "type": "Gift Code",
+                "description": "Redeemed code NEW"
+            },
+            {
+                "date": "2025-10-30T09:09:09.201519",
+                "amount": 25.0,
+                "type": "Gift Code",
+                "description": "Redeemed code NEW25"
+            },
+            {
+                "date": "2025-10-30T09:11:13.760541",
+                "amount": -50.0,
+                "type": "Withdrawal",
+                "description": "Withdrawal Request"
+            },
+            {
+                "date": "2025-10-30T09:14:00.932834",
+                "amount": -1000.0,
+                "type": "Withdrawal",
+                "description": "Withdrawal Request"
+            }
+        ],
+        "game_stats": {
+            "last_play_date": "",
+            "plays_today": 0
+        }
+    }
+}
