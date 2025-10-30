@@ -2,11 +2,11 @@
     "6580698563": {
         "first_name": "Manish",
         "username": "MnhDevTip",
-        "balance": 98999.0,
-        "referrals": 5,
+        "balance": 2042.0,
+        "referrals": 1,
         "referred_by": null,
         "join_date": "2025-10-30T08:59:59.269082",
-        "total_earned": 110.0,
+        "total_earned": 152.0,
         "last_bonus_claim": "2025-10-30",
         "tasks_completed": {},
         "transactions": [
@@ -51,11 +51,65 @@
                 "amount": -1000.0,
                 "type": "Withdrawal",
                 "description": "Withdrawal Request"
+            },
+            {
+                "date": "2025-10-30T12:36:36.107285",
+                "amount": 18.0,
+                "type": "Referral",
+                "description": "Bonus for inviting R"
+            },
+            {
+                "date": "2025-10-30T13:08:06.300650",
+                "amount": 12.0,
+                "type": "Referral",
+                "description": "Bonus for inviting R"
+            },
+            {
+                "date": "2025-10-30T13:14:24.170681",
+                "amount": 12.0,
+                "type": "Referral",
+                "description": "Bonus for inviting R"
             }
         ],
         "game_stats": {
             "last_play_date": "",
             "plays_today": 0
         }
+    },
+    "8418380760": {
+        "first_name": "R",
+        "username": null,
+        "balance": 0.0,
+        "referrals": 0,
+        "referred_by": "6580698563",
+        "join_date": "2025-10-30T13:14:14.038565",
+        "total_earned": 6.0,
+        "last_bonus_claim": "2025-10-30",
+        "tasks_completed": {},
+        "transactions": [
+            {
+                "date": "2025-10-30T13:16:54.384065",
+                "amount": 6.0,
+                "type": "Bonus",
+                "description": "Daily Bonus Claim"
+            },
+            {
+                "date": "2025-10-30T13:17:06.491061",
+                "amount": -5,
+                "type": "Game Loss",
+                "description": "Coin Flip loss (bet \u20b95.00)"
+            },
+            {
+                "date": "2025-10-30T13:17:20.583227",
+                "amount": -1,
+                "type": "Game Loss",
+                "description": "Coin Flip loss (bet \u20b91.00)"
+            }
+        ],
+        "game_stats": {
+            "last_play_date": "2025-10-30",
+            "plays_today": 2
+        },
+        "referral_bonus_claimed": true
     }
 }
