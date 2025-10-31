@@ -2,12 +2,12 @@
     "6580698563": {
         "first_name": "Manish",
         "username": "MnhDevTip",
-        "balance": 2042.0,
-        "referrals": 1,
+        "balance": 2023.0,
+        "referrals": 5,
         "referred_by": null,
         "join_date": "2025-10-30T08:59:59.269082",
-        "total_earned": 152.0,
-        "last_bonus_claim": "2025-10-30",
+        "total_earned": 163.0,
+        "last_bonus_claim": "2025-10-31",
         "tasks_completed": {},
         "transactions": [
             {
@@ -69,12 +69,33 @@
                 "amount": 12.0,
                 "type": "Referral",
                 "description": "Bonus for inviting R"
+            },
+            {
+                "date": "2025-10-31T11:08:05.596416",
+                "amount": 6.0,
+                "type": "Bonus",
+                "description": "Daily Bonus Claim"
+            },
+            {
+                "date": "2025-10-31T11:45:07.341503",
+                "amount": 5.0,
+                "type": "Task",
+                "description": "Approved: App Registration Task"
+            },
+            {
+                "date": "2025-10-31T11:51:22.199756",
+                "amount": -30.0,
+                "type": "Withdrawal",
+                "description": "Withdrawal Request"
             }
         ],
         "game_stats": {
             "last_play_date": "",
             "plays_today": 0
-        }
+        },
+        "completed_ss_tasks": [
+            "ad18dda0-0966-42a3-b46b-d1fa0636cdc2"
+        ]
     },
     "8418380760": {
         "first_name": "R",
@@ -111,5 +132,22 @@
             "plays_today": 2
         },
         "referral_bonus_claimed": true
+    },
+    "5367009004": {
+        "first_name": "Defaulter",
+        "username": "Defaulter124",
+        "balance": 0.0,
+        "referrals": 0,
+        "referred_by": "6580698563",
+        "join_date": "2025-10-31T11:48:46.025774",
+        "total_earned": 0.0,
+        "last_bonus_claim": null,
+        "tasks_completed": {},
+        "transactions": [],
+        "game_stats": {
+            "last_play_date": "",
+            "plays_today": 0
+        },
+        "completed_ss_tasks": []
     }
 }

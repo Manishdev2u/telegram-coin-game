@@ -1,0 +1,7 @@
+{
+    "referral_reward": 12.0,
+    "daily_bonus_reward": 6.0,
+    "min_withdrawal": 30.0,
+    "min_withdrawal_per_request": 22.0,
+    "min_referrals_for_withdrawal": 5
+}
