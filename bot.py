@@ -1048,32 +1048,63 @@ async def cancel_broadcast(update:Update,context:ContextTypes.DEFAULT_TYPE)->int
 
 # --- (All other handlers from the previous version remain here, unchanged) ---
 
+from telegram.ext import ApplicationBuilder
+
 def main() -> None:
     """Sets up and runs the bot."""
-    # Optional: Add proxy configuration if Telegram is blocked
-    # Uncomment and configure if needed:
-    # from telegram.ext import ApplicationBuilder
-    # application = ApplicationBuilder().token(BOT_TOKEN).proxy_url('http://proxy_host:proxy_port').build()
-    
-    application = Application.builder().token(BOT_TOKEN).build()
+    print("🚀 Starting Telegram Bot...")
+
+    # Build the bot application (new syntax, no Updater)
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
     
     # Conversation Handlers
-    task_conv = ConversationHandler(entry_points=[CallbackQueryHandler(tasks_start,pattern='^tasks_start$')],states={CHOOSE_TASK:[CallbackQueryHandler(task_selected,pattern='^start_task_')],AWAITING_CODE:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_task_code)]},fallbacks=[CallbackQueryHandler(cancel_task,pattern='^cancel_task$'),CallbackQueryHandler(bonus_zone_handler,pattern='^bonus_zone$')])
-    redeem_code_conv = ConversationHandler(entry_points=[CallbackQueryHandler(redeem_code_start,pattern='^redeem_code_start$')],states={AWAITING_GIFT_CODE:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_gift_code)]},fallbacks=[CallbackQueryHandler(bonus_zone_handler,pattern='^bonus_zone$')])
-    withdraw_conv = ConversationHandler(entry_points=[CallbackQueryHandler(withdraw_start,pattern='^withdraw$')],states={CHOOSE_METHOD_W:[CallbackQueryHandler(withdraw_method_choice,pattern='^withdraw_method_')],ASKING_AMOUNT_W:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_withdrawal_amount)],ASKING_DETAILS_W:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_withdrawal_details)],CONFIRM_WITHDRAWAL_W:[CallbackQueryHandler(confirm_withdrawal,pattern='^confirm_withdrawal$|^edit_withdrawal_details$')]},fallbacks=[CallbackQueryHandler(cancel_withdrawal,pattern='^cancel_withdrawal$')])
-    broadcast_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_broadcast_start,pattern='^admin_broadcast$')],states={BROADCAST_MESSAGE:[MessageHandler(filters.TEXT & ~filters.COMMAND,admin_broadcast_message)]},fallbacks=[CallbackQueryHandler(cancel_broadcast,pattern='^cancel_broadcast$')])
-    #... (gift code conv is omitted for brevity but is in the full code)
+    task_conv = ConversationHandler(entry_points=[CallbackQueryHandler(tasks_start,pattern='^tasks_start$')],
+                                    states={CHOOSE_TASK:[CallbackQueryHandler(task_selected,pattern='^start_task_')],
+                                            AWAITING_CODE:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_task_code)]},
+                                    fallbacks=[CallbackQueryHandler(cancel_task,pattern='^cancel_task$'),
+                                               CallbackQueryHandler(bonus_zone_handler,pattern='^bonus_zone$')])
     
-    # NEW Conversation Handlers
-    settings_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_edit_setting_start, pattern='^admin_edit_setting_')], states={AWAIT_NEW_SETTING_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_new_setting)]}, fallbacks=[CallbackQueryHandler(admin_settings_menu, pattern='^admin_settings_menu$')])
-    user_management_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_view_user_details, pattern='^admin_view_user_')], states={USER_ACTION_MENU: [CallbackQueryHandler(admin_user_action_choice, pattern='^admin_user_')], AWAIT_NEW_BALANCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_new_balance)], AWAIT_USER_MESSAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_user_message)],}, fallbacks=[CallbackQueryHandler(admin_list_users, pattern='^admin_list_users_0$')])
-    add_task_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_add_task_start, pattern='^admin_task_add$')], states={CREATE_TASK_TITLE:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_title)], CREATE_TASK_DESC:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_desc)], CREATE_TASK_LINK:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_link)], CREATE_TASK_REWARD:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_reward)], CREATE_TASK_QTY:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_qty)]}, fallbacks=[CallbackQueryHandler(admin_task_menu, pattern='^admin_task_menu$')])
-    ss_submission_conv = ConversationHandler(entry_points=[CallbackQueryHandler(start_screenshot_submission, pattern='^ss_task_submit_')], states={AWAITING_SCREENSHOT: [MessageHandler(filters.PHOTO, receive_screenshot)]}, fallbacks=[CallbackQueryHandler(cancel_ss_submission, pattern='^cancel_ss_submission$')])
+    redeem_code_conv = ConversationHandler(entry_points=[CallbackQueryHandler(redeem_code_start,pattern='^redeem_code_start$')],
+                                           states={AWAITING_GIFT_CODE:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_gift_code)]},
+                                           fallbacks=[CallbackQueryHandler(bonus_zone_handler,pattern='^bonus_zone$')])
     
-    # Add all handlers to the application
+    withdraw_conv = ConversationHandler(entry_points=[CallbackQueryHandler(withdraw_start,pattern='^withdraw$')],
+                                        states={CHOOSE_METHOD_W:[CallbackQueryHandler(withdraw_method_choice,pattern='^withdraw_method_')],
+                                                ASKING_AMOUNT_W:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_withdrawal_amount)],
+                                                ASKING_DETAILS_W:[MessageHandler(filters.TEXT & ~filters.COMMAND,receive_withdrawal_details)],
+                                                CONFIRM_WITHDRAWAL_W:[CallbackQueryHandler(confirm_withdrawal,pattern='^confirm_withdrawal$|^edit_withdrawal_details$')]},
+                                        fallbacks=[CallbackQueryHandler(cancel_withdrawal,pattern='^cancel_withdrawal$')])
+    
+    broadcast_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_broadcast_start,pattern='^admin_broadcast$')],
+                                         states={BROADCAST_MESSAGE:[MessageHandler(filters.TEXT & ~filters.COMMAND,admin_broadcast_message)]},
+                                         fallbacks=[CallbackQueryHandler(cancel_broadcast,pattern='^cancel_broadcast$')])
+    
+    settings_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_edit_setting_start, pattern='^admin_edit_setting_')],
+                                        states={AWAIT_NEW_SETTING_VALUE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_new_setting)]},
+                                        fallbacks=[CallbackQueryHandler(admin_settings_menu, pattern='^admin_settings_menu$')])
+    
+    user_management_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_view_user_details, pattern='^admin_view_user_')],
+                                               states={USER_ACTION_MENU: [CallbackQueryHandler(admin_user_action_choice, pattern='^admin_user_')],
+                                                       AWAIT_NEW_BALANCE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_new_balance)],
+                                                       AWAIT_USER_MESSAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, admin_receive_user_message)]},
+                                               fallbacks=[CallbackQueryHandler(admin_list_users, pattern='^admin_list_users_')],
+                                               allow_reentry=True)
+    
+    add_task_conv = ConversationHandler(entry_points=[CallbackQueryHandler(admin_add_task_start, pattern='^admin_task_add$')],
+                                        states={CREATE_TASK_TITLE:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_title)],
+                                                CREATE_TASK_DESC:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_desc)],
+                                                CREATE_TASK_LINK:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_link)],
+                                                CREATE_TASK_REWARD:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_reward)],
+                                                CREATE_TASK_QTY:[MessageHandler(filters.TEXT & ~filters.COMMAND, admin_task_receive_qty)]},
+                                        fallbacks=[CallbackQueryHandler(admin_task_menu, pattern='^admin_task_menu$')])
+    
+    ss_submission_conv = ConversationHandler(entry_points=[CallbackQueryHandler(start_screenshot_submission, pattern='^ss_task_submit_')],
+                                             states={AWAITING_SCREENSHOT: [MessageHandler(filters.PHOTO, receive_screenshot)]},
+                                             fallbacks=[CallbackQueryHandler(cancel_ss_submission, pattern='^cancel_ss_submission$')])
+    
+    # Add all handlers (no change needed)
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(check_membership_handler, pattern='^check_membership$'))
-    # --- Add all regular handlers ---
     application.add_handler(CallbackQueryHandler(daily_bonus_handler, pattern='^daily_bonus$'))
     application.add_handler(CallbackQueryHandler(my_stats_handler, pattern='^my_stats$'))
     application.add_handler(CallbackQueryHandler(mini_statement_handler, pattern='^mini_statement$'))
@@ -1086,8 +1117,6 @@ def main() -> None:
     application.add_handler(CallbackQueryHandler(play_coinflip, pattern='^play_coinflip_'))
     application.add_handler(CallbackQueryHandler(list_screenshot_tasks, pattern='^ss_tasks_list$'))
     application.add_handler(CallbackQueryHandler(show_screenshot_task_details, pattern='^ss_task_details_'))
-    
-    # --- Add all admin handlers ---
     application.add_handler(CallbackQueryHandler(admin_panel, pattern='^admin_panel$'))
     application.add_handler(CallbackQueryHandler(admin_stats, pattern='^admin_stats$'))
     application.add_handler(CallbackQueryHandler(admin_clear_withdrawals_confirm, pattern='^admin_clear_withdrawals_confirm$'))
@@ -1107,16 +1136,19 @@ def main() -> None:
     application.add_handler(CallbackQueryHandler(admin_approve_submission, pattern='^admin_approve_ss_'))
     application.add_handler(CallbackQueryHandler(admin_reject_submission, pattern='^admin_reject_ss_'))
 
-    # --- Add all conversation handlers ---
-    application.add_handler(task_conv); application.add_handler(redeem_code_conv); application.add_handler(withdraw_conv)
-    application.add_handler(broadcast_conv) #; application.add_handler(create_gift_code_conv); 
+    application.add_handler(task_conv)
+    application.add_handler(redeem_code_conv)
+    application.add_handler(withdraw_conv)
+    application.add_handler(broadcast_conv)
     application.add_handler(user_management_conv)
-    application.add_handler(settings_conv); application.add_handler(add_task_conv); application.add_handler(ss_submission_conv)
-    
+    application.add_handler(settings_conv)
+    application.add_handler(add_task_conv)
+    application.add_handler(ss_submission_conv)
     application.add_handler(CallbackQueryHandler(menu_button_handler))
     
-    logger.info("Bot is starting...")
+    logger.info("✅ Bot is running...")
     application.run_polling()
+
 
 if __name__ == "__main__":
     main()
